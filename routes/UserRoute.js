@@ -10,6 +10,10 @@ const requireAuth = (req, res, next) => {
     next();
 };
 
+router.get('/',(req,res) => {
+    res.render('Logging')
+})
+
 // Home Route
 router.get('/home', requireAuth, async (req, res) => {
     res.render('home', { user: req.session.user });

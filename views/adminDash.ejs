@@ -30,7 +30,7 @@
         header a {
             text-decoration: none;
             color: #ffffff;
-            background-color: #007bff;
+            background-color: rgb(0, 123, 255);
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -106,12 +106,17 @@
         .vehicle-card button:hover {
             background-color: #b02a37;
         }
+        #l{background-color: red;}
+        #l:hover{background-color: rgb(188, 3, 3);}
+        #e{background-color: rgb(0, 123, 255);}
+        #e:hover{background-color: rgb(0, 123, 150);}
     </style>
 </head>
 <body>
     <header>
         <h1>Welcome, <%= user.name %></h1>
         <a href="/admin/add-vehicle">+ Add Vehicle</a>
+        <a id='l' href="/admin/logout">Logout</a>
     </header>
     <div class="container">
         <div class="vehicle-list">
@@ -128,7 +133,7 @@
                             <p>Availability: <b><%= vehicle.availability %></b></p>
                         </div>
                         <button onclick="deleteVehicle('<%= vehicle.v_id %>')">Delete</button>
-                        <button onclick="editvehicle('<%= vehicle.v_id %>')">
+                        <button id="e" editvehicle('<%= vehicle.v_id %>')">
                             Edit
                         </button>
                     </div>
