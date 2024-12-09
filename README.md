@@ -1,1 +1,1 @@
-# Nithin90OTboy
+# DBMS mini project
