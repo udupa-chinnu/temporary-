@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            width: 98%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Add a New Vehicle</h1>
+    <form action="/admin/add-vehicle" method="POST" enctype="multipart/form-data">
+        <input type="text" name="v_name" placeholder="Vehicle Name" required>
+        <select name="v_type" required>
+            <option value="car">Car</option>
+            <option value="bike">Bike</option>
+            <option value="bus">Bus</option>
+        </select>
+        <input type="number" name="model_year" placeholder="Model Year" required>
+        <select name="availability" required>
+            <option value="available">Available</option>
+            <option value="maintanance">Maintenance</option>
+        </select>
+        <input type="number" step="0.01" name="price" placeholder="Rent Price" required>
+        <input type="text" name="reg_no" placeholder="Registration Number" maxlength="12" required>
+        <input type="file" name="image" accept="image/*">
+        <button type="submit">Add Vehicle</button>
+    </form>
+</body>
+</html>

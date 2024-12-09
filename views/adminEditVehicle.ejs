@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Vehicle</h1>
+        <form id="editVehicleForm">
+            <label for="v_name">Vehicle Name:</label>
+            <input type="text" id="v_name" name="v_name" value="<%= vehicle.v_name %>" required>
+
+            <label for="v_type">Vehicle Type:</label>
+            <input type="text" id="v_type" name="v_type" value="<%= vehicle.v_type %>" required>
+
+            <label for="model_year">Model Year:</label>
+            <input type="number" id="model_year" name="model_year" value="<%= vehicle.model_year %>" required>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" value="<%= vehicle.price %>" required>
+
+            <label for="reg_no">Registration Number:</label>
+            <input type="text" id="reg_no" name="reg_no" value="<%= vehicle.reg_no %>" required>
+
+            <label for="availability">Availability:</label>
+            <select id="availability" name="availability" required>
+                <option value="available" <%= vehicle.availability === 'available' ? 'selected' : '' %>>Available</option>
+                <option value="maintanance" <%= vehicle.availability === 'maintanance' ? 'selected' : '' %>>Maintenance</option>
+            </select>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('editVehicleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const vehicleDetails = Object.fromEntries(formData.entries());
+            const vehicleId = '<%= vehicle.v_id %>'; // Get vehicle ID dynamically
+
+            try {
+                const response = await fetch(`/admin/update-vehicle/${vehicleId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(vehicleDetails),
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert('Vehicle updated successfully!');
+                    window.location.href = '/admin/dashboard';
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred');
+            }
+        });
+    </script>
+</body>
+</html>

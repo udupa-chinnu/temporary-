@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Vehicles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #ffffff; /* White text */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .vehicle-list h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .vehicle-card {
+            background-color: #292929;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+
+        .vehicle-card:hover {
+            transform: scale(1.02);
+        }
+
+        .vehicle-card img {
+            width: 120px;
+            height: 90px;
+            margin-right: 15px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .vehicle-card div {
+            flex-grow: 1;
+        }
+
+        .vehicle-card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .vehicle-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #bbbbbb;
+        }
+
+        .vehicle-card button {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .vehicle-card button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="vehicle-list">
+            <h2>Hi, <%= user.name %></h2>
+            <h2>Available Vehicles</h2>
+            <div id="vehicle-list"></div>
+        </div>
+    </div>
+    <script>
+        // Fetch and display available vehicles
+        async function loadAvailableVehicles() {
+            const response = await fetch('/available-vehicles');
+            const vehicles = await response.json();
+            const list = document.getElementById('vehicle-list');
+
+            if (vehicles.length === 0) {
+                list.innerHTML = `<p style="text-align: center; color: #bbbbbb;">No vehicles available at the moment.</p>`;
+                return;
+            }
+
+            vehicles.forEach(vehicle => {
+                const card = document.createElement('div');
+                card.classList.add('vehicle-card');
+
+                const imageUrl = `/vehicle-image/${vehicle.v_id}`; // Endpoint to serve the image
+
+                card.innerHTML = `
+                    <img src="${imageUrl}" alt="Vehicle Image">
+                    <div>
+                        <h3>${vehicle.v_name} (${vehicle.v_type})</h3>
+                        <p>Model Year: ${vehicle.model_year}</p>
+                        <p>Rent Price: $${vehicle.price}/day</p>
+                        <p>Registration No: ${vehicle.reg_no}</p>
+                    </div>
+                    <button onclick="bookVehicle(${vehicle.v_id})">Book Now</button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // Redirect to booking page
+        async function bookVehicle(vehicleId) {
+            await fetch(`/rent-vehicle/${vehicleId}`,{method :'Post'});
+            location.href = '/book-vehicle';
+        }
+
+        loadAvailableVehicles();
+    </script>
+</body>
+</html>
